@@ -1,0 +1,38 @@
+.content {
+  background-color: #020f2a;
+  color: #ffffff;
+  padding: 32px 64px;
+}
+
+.description {
+  width: 100%;
+  display: flex;
+}
+
+.description-text {
+  width: 40%;
+  padding-right: 64px;
+}
+
+.description-img {
+  height: 800px;
+}
+
+.description-img img {
+  height: 50%;
+  width: auto;
+  border-radius: 10px;
+}
+
+.tickets img {
+  height: 200px;
+  padding: 0px;
+  margin: 16px 0px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.tickets img:hover {
+  transform: scale(1.1);
+  transition: transform .2s;
+}
