@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import usersRoute from "./routes/users.js";
 import matchesRoute from "./routes/matches.js";
 // import ticketsRoute from "./routes/tickets.js";
+import cors from "cors";
 
 const app = express();
 dotenv.config()
@@ -20,6 +21,7 @@ const connect = async () => {
   };
 
 //middlewares
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth", authRoute);

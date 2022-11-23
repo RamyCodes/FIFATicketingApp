@@ -1,39 +1,48 @@
 import mongoose from "mongoose";
 const MatchSchema = new mongoose.Schema({
-  matchNumber: {
+  MatchNumber: {
     type: Number,
     required: true,
   },
-  dateUtc: {
+  RoundNumber: {
+    type: Number,
+    required: true,
+  },
+  DateUtc: {
     type: Date,
     required: true,
   },
-  roundNumber: {
+  Location: {
+    type: String,
+    required: true,
+  },
+  StadiumCapacity: {
     type: Number,
     required: true,
   },
-  location: {
+  HomeTeam: {
     type: String,
     required: true,
   },
-  homeTeam: {
+  AwayTeam: {
     type: String,
     required: true,
   },
-  awayTeam: {
+  Group: {
     type: String,
     required: true,
   },
-  photos: {
-    type: [String],
-  },
-  desc: {
+  HomeTeamScore: {
     type: String,
+    required: Number,
+  },
+  AwayTeamScore: {
+    type: Number,
     required: true,
   },
-  featured: {
+  Featured: {
     type: Boolean,
-    default: false,
+    default: false, //will be used for data analytics
   },
 });
 
