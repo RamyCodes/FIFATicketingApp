@@ -33,8 +33,8 @@ const MatchSchema = new mongoose.Schema({
     required: true,
   },
   HomeTeamScore: {
-    type: String,
-    required: Number,
+    type: Number,
+    required: true,
   },
   AwayTeamScore: {
     type: Number,

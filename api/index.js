@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import usersRoute from "./routes/users.js";
 import matchesRoute from "./routes/matches.js";
 // import ticketsRoute from "./routes/tickets.js";
+import stripeRoute from "./routes/stripe.js";
 import cors from "cors";
 
 const app = express();
@@ -28,6 +29,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/matches", matchesRoute);
 // app.use("/api/tickets", ticketsRoute);
+app.use("/api/checkout", stripeRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

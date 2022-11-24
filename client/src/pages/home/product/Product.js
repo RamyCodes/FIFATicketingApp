@@ -7,11 +7,19 @@ import { useState, useEffect } from "react";
 //import { addProduct } from "../redux/cartRedux";
 //import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import StripeCheckout from "react-stripe-checkout";
 import "./product.css";
+
+const KEY = "pk_test_51Kz0mQCAdufLrSrfWGUsQ9RrhPoNSZbzvVqtkZuUTNTAP5TqUcZELqguSxM1QXfWPTPuIIx6PBZ7JV86U7wPDPrn00qaqkrqay";
 
 function Product(){
   const [product, setProduct] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [stripeToken, setStripeToken] = useState(null);
+  const onToken = (token) => {
+    setStripeToken(token);
+  };
+  console.log(stripeToken);
 //  const dispatch = useDispatch();
 
 
@@ -52,6 +60,28 @@ function Product(){
         })
         
     },[])
+
+    useEffect(() => {
+      const makeRequest = async () => {
+        try {
+          const res = await axios.post("http://localhost:5000/api/checkout/payment", {
+            tokenId: stripeToken.id,
+            amount: 100*100,
+          });
+          alert("Payment Success ! Redirecting to your Orders...")
+          sessionStorage.setItem('currentUser', '1');
+          let address = res.data.source.address_line1
+          let tokken = stripeToken.id
+          let email = stripeToken.email
+          sessionStorage.setItem('email', email)
+          console.log("response email data : " + email)
+        } catch(err){
+      
+          console.log(err.response);
+      }
+      };
+      stripeToken && makeRequest();
+    }, [stripeToken]);
   
   return(
     <div className="main">
@@ -81,7 +111,19 @@ function Product(){
             <h1 className="Title"> AwayTeamScore: {product.AwayTeamScore} </h1> */}
           </div>
             <div className="Image">
+            <StripeCheckout 
+          name= "Tickets - FIFA World Cup Qatar 2022™"
+          image=""
+          billingAddress
+          shippingAddress
+          description = {`Total amount to be paid: 100 EGP`}
+          currency= "EGP"
+          amount={100*100}
+          token={onToken}
+          stripeKey={KEY}
+          >
             <img id={product._id} key={product._id} src="https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans"/>
+            </StripeCheckout>
             </div>
         </div>
       </div>)
