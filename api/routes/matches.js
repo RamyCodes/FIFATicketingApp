@@ -50,13 +50,40 @@ router.get("/:id", async(req, res, next) => {
       }
 })
 
+
+
 //GET all
-router.get("/", async(req, res, next) => {
-    try {
-        const matches = await Match.find();
-        res.status(200).json(matches);
-      } catch (err) {
-        next(err);
-      }
-})
+// router.get("/", async(req, res, next) => {
+//     try {
+//         const matches = await Match.find();
+//         res.status(200).json(matches);
+//       } catch (err) {
+//         next(err);
+//       }
+// })
+router.get("/", async (req, res) => {
+  var qHomeTeam = req.query.HomeTeam;
+
+  try {
+    let country;
+
+    // if (qHomeTeam) {
+    //   country = await Match.find({
+    //     HomeTeam: req.query.HomeTeam,
+    //     AwayTeam: req.query.HomeTeam
+    //   },
+    //   )}
+        if (qHomeTeam) {
+      country = await Match.find({$or:[{HomeTeam: qHomeTeam},{ AwayTeam:qHomeTeam}]}
+      )}
+
+ else {
+      country = await Match.find();
+    }
+
+    res.status(200).json(country);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 export default router;
