@@ -1,14 +1,11 @@
-import React from "react";
-//import { ShoppingBasketOutlined } from "@material-ui/icons";
-import Navbar from "../../../components/navbar/Navbar";
-import axios from "axios";
-//import { Add, Remove } from "@material-ui/icons";
-import { useState, useEffect } from "react";
-//import { addProduct } from "../redux/cartRedux";
-//import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
-import StripeCheckout from "react-stripe-checkout";
 import "./product.css";
+import Navbar from "../../../components/navbar/Navbar";
+import React from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import StripeCheckout from "react-stripe-checkout";
+import { message } from "antd";
+
 
 const KEY = "pk_test_51Kz0mQCAdufLrSrfWGUsQ9RrhPoNSZbzvVqtkZuUTNTAP5TqUcZELqguSxM1QXfWPTPuIIx6PBZ7JV86U7wPDPrn00qaqkrqay";
 
@@ -58,7 +55,6 @@ function Product(){
         .catch(err => {
           console.log(err)
         })
-        
     },[])
 
     useEffect(() => {
@@ -68,21 +64,35 @@ function Product(){
             tokenId: stripeToken.id,
             amount: 100*100,
           });
-          alert("Payment Success ! Redirecting to your Orders...")
-          sessionStorage.setItem('currentUser', '1');
-          let address = res.data.source.address_line1
+          message.success(`Payment Success ! Ticket holder email: ${stripeToken.email}`, 3)
           let tokken = stripeToken.id
           let email = stripeToken.email
           sessionStorage.setItem('email', email)
           console.log("response email data : " + email)
+          createReservation();
         } catch(err){
-      
+          message.error('Payment Failed ! Please try again !', 3)
           console.log(err.response);
       }
       };
       stripeToken && makeRequest();
     }, [stripeToken]);
   
+    const createReservation = async () => {
+      let showDate = new Date()
+      let displayDate = showDate.getDate() +'/'+ (showDate.getMonth() + 1) +'/'+ showDate.getFullYear()
+      try {
+        const res = await axios.post("http://localhost:5000/api/reservations", {
+          ticketID: "testTicket",
+          DatePurchased: displayDate,
+          userEmail: stripeToken.email
+        });
+      }
+      catch (err){
+        console.log(err.response);
+    }
+    }
+
   return(
     <div className="main">
     <Navbar />          

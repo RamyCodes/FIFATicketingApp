@@ -7,6 +7,7 @@ import usersRoute from "./routes/users.js";
 import matchesRoute from "./routes/matches.js";
 // import ticketsRoute from "./routes/tickets.js";
 import stripeRoute from "./routes/stripe.js";
+import reservationsRoute from "./routes/reservations.js";
 import cors from "cors";
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/matches", matchesRoute);
+app.use("/api/reservations", reservationsRoute);
 // app.use("/api/tickets", ticketsRoute);
 app.use("/api/checkout", stripeRoute);
 
