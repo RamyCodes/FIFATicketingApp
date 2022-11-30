@@ -5,6 +5,10 @@ const TicketsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    availability: {
+      type: Boolean,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
