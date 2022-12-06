@@ -125,7 +125,6 @@ function Product(){
             <h1 className="Title"> RoundNumber: {product.RoundNumber} </h1>
             <h1 className="Title"> DateUtc: {product.DateUtc} </h1>
             <h1 className="Title"> Location: {product.Location} </h1>
-            <h1 className="Title"> StadiumCapacity: {product.StadiumCapacity} </h1>
             <h1 className="Title"> HomeTeam: {product.HomeTeam} </h1>
             <h1 className="Title"> AwayTeam: {product.AwayTeam} </h1>
             <h1 className="Title"> Group: {product.Group} </h1>
