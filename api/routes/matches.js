@@ -4,7 +4,7 @@ import { verifyAdmin } from "../utils/verifyToken.js";
 const router = express.Router();
 
 //CREATE
-router.post("/", verifyAdmin,async(req, res, next) => {
+router.post("/" ,async(req, res, next) => {
 
   const newMatch = new Match(req.body);
   
