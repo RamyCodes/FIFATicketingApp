@@ -5,6 +5,7 @@ import authRoute from "./routes/auth.js";
 import cookieParser from "cookie-parser";
 import usersRoute from "./routes/users.js";
 import matchesRoute from "./routes/matches.js";
+import paymentsRoute from "./routes/payments.js";
 // import ticketsRoute from "./routes/tickets.js";
 import stripeRoute from "./routes/stripe.js";
 import reservationsRoute from "./routes/reservations.js";
@@ -32,6 +33,8 @@ app.use("/api/matches", matchesRoute);
 app.use("/api/reservations", reservationsRoute);
 // app.use("/api/tickets", ticketsRoute);
 app.use("/api/checkout", stripeRoute);
+app.use("/api/payments", paymentsRoute);
+
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
