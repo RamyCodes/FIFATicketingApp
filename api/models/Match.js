@@ -44,6 +44,12 @@ const MatchSchema = new mongoose.Schema({
     type: Boolean,
     default: false, //will be used for data analytics
   },
+  NumberOfAvailableTickets: {
+    type: Number,
+  },
+  NumberOfPendingTickets: {
+    type: Number,
+  }
 });
 
 export default mongoose.model("Match", MatchSchema)

@@ -17,6 +17,8 @@ function Product(){
     setStripeToken(token);
   };
   console.log(stripeToken);
+  let currentProduct = "";
+  let currentPendingTickets = "";
 //  const dispatch = useDispatch();
 
 
@@ -65,7 +67,6 @@ function Product(){
             amount: 100*100,
           });
           message.success(`Payment Success ! Ticket holder email: ${stripeToken.email}`, 3)
-          let tokken = stripeToken.id
           let email = stripeToken.email
           sessionStorage.setItem('email', email)
           console.log("response email data : " + email)
@@ -93,6 +94,17 @@ function Product(){
     }
     }
 
+    const reduceStock = (id, pending) =>{
+      try {
+        const res = axios.put(`http://localhost:5000/api/matches/${id}`, {
+          NumberOfPendingTickets: pending + 1,
+        });
+      } catch (err){
+        console.log(err.response);
+    }
+    }
+
+
   return(
     <div className="main">
     <Navbar />          
@@ -109,14 +121,16 @@ function Product(){
             <br/><br/><h1> Match {index +1}</h1><br/>
         <div style={{display: "flex", justifyContent: "space-between"}}> 
           <div>
-            <h1 className="Title">   MatchNumber: {product.MatchNumber} </h1>
-            <h1 className="Title">  RoundNumber: {product.RoundNumber} </h1>
-            <h1 className="Title">  DateUtc: {product.DateUtc} </h1>
+            <h1 className="Title"> MatchNumber: {product.MatchNumber} </h1>
+            <h1 className="Title"> RoundNumber: {product.RoundNumber} </h1>
+            <h1 className="Title"> DateUtc: {product.DateUtc} </h1>
             <h1 className="Title"> Location: {product.Location} </h1>
             <h1 className="Title"> StadiumCapacity: {product.StadiumCapacity} </h1>
             <h1 className="Title"> HomeTeam: {product.HomeTeam} </h1>
             <h1 className="Title"> AwayTeam: {product.AwayTeam} </h1>
             <h1 className="Title"> Group: {product.Group} </h1>
+            <h1 className="Title"> AvailableTickets: {product.NumberOfAvailableTickets} </h1>
+            <h1 className="Title"> PendingTickets: {product.NumberOfPendingTickets} </h1>
             {/* <h1 className="Title"> HomeTeamScore: {product.HomeTeamScore} </h1>
             <h1 className="Title"> AwayTeamScore: {product.AwayTeamScore} </h1> */}
           </div>
@@ -132,7 +146,7 @@ function Product(){
           token={onToken}
           stripeKey={KEY}
           >
-            <img id={product._id} key={product._id} src="https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans"/>
+            <img id={product._id} key={product._id} onClick={()=>{reduceStock(product._id, product.NumberOfPendingTickets)}} src="https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans"/>
             </StripeCheckout>
             </div>
         </div>

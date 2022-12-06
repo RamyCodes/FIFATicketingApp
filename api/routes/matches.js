@@ -17,7 +17,7 @@ router.post("/", verifyAdmin,async(req, res, next) => {
 })
 
 //UPDATE
-router.put("/:id", verifyAdmin, async(req, res, next) => {
+router.put("/:id", async(req, res, next) => {
      try {
       const updatedMatch = await Match.findByIdAndUpdate(
       req.params.id,
@@ -39,6 +39,16 @@ router.delete("/:id", async(req, res, next) => {
         next(err);
     }
 })
+
+//DELETE ALL
+router.delete("/", async (req, res) => {
+  try {
+    const deleted = await Match.deleteMany({});
+    res.status(200).json(deleted);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 //GET by id
 router.get("/:id", async(req, res, next) => {
