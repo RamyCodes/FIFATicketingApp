@@ -1,10 +1,10 @@
 import express from "express";
 import Stripe from "stripe";
-// const KEY = process.env.STRIPE_KEY
-// const stripe = require("stripe")(KEY); ~Not working properly, debug later
+import dotenv from "dotenv";
+dotenv.config()
 
 const router = express.Router();
-const stripe = new Stripe("sk_test_51Kz0mQCAdufLrSrfd8bWUZ182QyvN43Tbc7L7174338zml0seLUBZYeNfxHy1N2mSA8t9zmASjaNGcImaD1soeA200T7JLdj0e")
+const stripe = new Stripe(process.env.STRIPE_KEY)
 
 router.post("/payment", (req, res) => {
   stripe.charges.create(
