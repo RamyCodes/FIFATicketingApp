@@ -51,7 +51,11 @@ const MatchSchema = new mongoose.Schema({
   },
   NumberOfPendingTickets: {
     type: Number,
+  },
+  NumberOfReservedTickets: {
+    type: Number,
   }
+ 
 });
 
 export default mongoose.model("Match", MatchSchema)
