@@ -1,50 +1,52 @@
 import mongoose from "mongoose";
 const MatchSchema = new mongoose.Schema({
-  MatchNumber: {
+  matchNumber: {
     type: Number,
     required: true,
   },
-  RoundNumber: {
+  roundNumber: {
     type: Number,
     required: true,
   },
-  DateUtc: {
+  dateUtc: {
     type: Date,
     required: true,
   },
-  Location: {
+  location: {
     type: String,
     required: true,
   },
-  StadiumCapacity: {
-    type: Number,
-    required: true,
+  availability:{
+    category1:{
+        count: {type: Number},
+        price: {type: Number}
+    },
+    category2:{
+        count: {type: Number},
+        price: {type: Number}
+    },
+    category3:{
+        count: {type: Number},
+        price: {type: Number}
+    }
   },
-  HomeTeam: {
+  homeTeam: {
     type: String,
     required: true,
   },
-  AwayTeam: {
+  awayTeam: {
     type: String,
     required: true,
   },
-  Group: {
+  group: {
     type: String,
-    required: true,
-  },
-  HomeTeamScore: {
-    type: Number,
-    required: true,
-  },
-  AwayTeamScore: {
-    type: Number,
     required: true,
   },
   Featured: {
     type: Boolean,
     default: false, //will be used for data analytics
   },
-  NumberOfAvailableTickets: {
+  NumberOfReservedTickets: {
     type: Number,
   },
   NumberOfPendingTickets: {

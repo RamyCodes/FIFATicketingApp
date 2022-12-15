@@ -5,6 +5,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import { message } from "antd";
+import ComboBox from 'react-responsive-combo-box';
 
 
 const KEY = "pk_test_51Kz0mQCAdufLrSrfWGUsQ9RrhPoNSZbzvVqtkZuUTNTAP5TqUcZELqguSxM1QXfWPTPuIIx6PBZ7JV86U7wPDPrn00qaqkrqay";
@@ -121,13 +122,10 @@ function Product(){
             <br/><br/><h1> Match {index +1}</h1><br/>
         <div style={{display: "flex", justifyContent: "space-between"}}> 
           <div>
-            <h1 className="Title"> MatchNumber: {product.MatchNumber} </h1>
-            <h1 className="Title"> RoundNumber: {product.RoundNumber} </h1>
-            <h1 className="Title"> DateUtc: {product.DateUtc} </h1>
-            <h1 className="Title"> Location: {product.Location} </h1>
-            <h1 className="Title"> HomeTeam: {product.HomeTeam} </h1>
-            <h1 className="Title"> AwayTeam: {product.AwayTeam} </h1>
-            <h1 className="Title"> Group: {product.Group} </h1>
+            <h1 className="Title"> Game: {product.homeTeam} VS {product.awayTeam} </h1>
+            <h1 className="Title"> RoundNumber: {product.roundNumber} </h1>
+            <h1 className="Title"> DateUtc: {product.dateUtc} </h1>
+            <h1 className="Title"> Location: {product.location} </h1>
             <h1 className="Title"> AvailableTickets: {product.NumberOfAvailableTickets} </h1>
             <h1 className="Title"> PendingTickets: {product.NumberOfPendingTickets} </h1>
             {/* <h1 className="Title"> HomeTeamScore: {product.HomeTeamScore} </h1>

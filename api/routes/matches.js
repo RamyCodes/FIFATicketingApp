@@ -17,17 +17,19 @@ router.post("/" ,async(req, res, next) => {
 })
 
 //UPDATE
+
+
 router.put("/:id", async(req, res, next) => {
-     try {
-      const updatedMatch = await Match.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-      );
-      res.status(200).json(updatedMatch);
-     } catch (err) {
-        next(err);
-     }
+  try {
+   const updatedMatch = await Match.findOneAndUpdate(
+   { matchNumber: req.params.id },
+   { $set: req.body },
+   { new: true }
+   );
+   res.status(200).json(updatedMatch);
+  } catch (err) {
+     next(err);
+  }
 })
 
 //DELETE
