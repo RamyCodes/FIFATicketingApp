@@ -5,8 +5,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import { message } from "antd";
-import ComboBox from 'react-responsive-combo-box';
-
+import  AddIcon from '@mui/icons-material/Add';
+import  RemoveIcon from '@mui/icons-material/Remove';
 
 const KEY = "pk_test_51Kz0mQCAdufLrSrfWGUsQ9RrhPoNSZbzvVqtkZuUTNTAP5TqUcZELqguSxM1QXfWPTPuIIx6PBZ7JV86U7wPDPrn00qaqkrqay";
 
@@ -14,6 +14,9 @@ function Product(){
   const [product, setProduct] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [stripeToken, setStripeToken] = useState(null);
+  const [categoryState, setcategoryState] = useState("Category 1");
+  const [priceState, setpriceState] = useState(75);
+  const [countState, setcountState] = useState();
   const onToken = (token) => {
     setStripeToken(token);
   };
@@ -35,19 +38,19 @@ function Product(){
 
 
 
-// const handleQuantity = (type, search) =>{
-//   if(product[0].stock === 0)
-//   return(alert("Item is currently not available !"));
-//   if(type === "dec"){
-//    quantity > 1 && setQuantity(quantity - 1);
-//   }
-//   else if(quantity < product[0].stock){
-//     setQuantity(quantity + 1);
-//   }
-//   else{
-//     alert(`Only ${product[0].stock} of this product left !`)
-//   }
-// }
+  const handleQuantity = (type, mNumber) =>{
+    if(product[mNumber].availability.category1.count === 0)
+    return(message.error("Item is currently not available !"));
+    if(type === "dec"){
+    quantity > 1 && setQuantity(quantity - 1);
+    }
+    else if(quantity < product[mNumber].availability.category1.count && quantity < 2){
+      setQuantity(quantity + 1);
+    }
+    else{
+      message.error("You can't get more tickets!")
+    }
+  }
 
   useEffect(()=> {
     axios.get(`http://localhost:5000/api/matches`)
@@ -105,6 +108,23 @@ function Product(){
     }
     }
 
+    const getPrice = (mNumber, category) =>{
+      if(category === "Category 1")
+      return product[mNumber].availability.category1.price
+      else if(category === "Category 2")
+      return product[mNumber].availability.category2.price
+      else if(category === "Category 3")
+      return product[mNumber].availability.category3.price
+    }
+
+    const getCount = (mNumber, category) =>{
+      if(category === "Category 1")
+      return product[mNumber].availability.category1.count
+      else if(category === "Category 2")
+      return product[mNumber].availability.category2.count
+      else if(category === "Category 3")
+      return product[mNumber].availability.category3.count
+    }
 
   return(
     <div className="main">
@@ -120,16 +140,36 @@ function Product(){
             <br/>
             <hr size="2" width="90%" color="white"/>
             <br/><br/><h1> Match {index +1}</h1><br/>
-        <div style={{display: "flex", justifyContent: "space-between"}}> 
+        <div id={product._id + index} key={product._id + index} style={{display: "flex", justifyContent: "space-between"}}> 
           <div>
             <h1 className="Title"> Game: {product.homeTeam} VS {product.awayTeam} </h1>
-            <h1 className="Title"> RoundNumber: {product.roundNumber} </h1>
+            <h1 className="Title"> Round Number: {product.roundNumber} </h1>
             <h1 className="Title"> DateUtc: {product.dateUtc} </h1>
             <h1 className="Title"> Location: {product.location} </h1>
-            <h1 className="Title"> AvailableTickets: {product.NumberOfAvailableTickets} </h1>
-            <h1 className="Title"> PendingTickets: {product.NumberOfPendingTickets} </h1>
-            {/* <h1 className="Title"> HomeTeamScore: {product.HomeTeamScore} </h1>
-            <h1 className="Title"> AwayTeamScore: {product.AwayTeamScore} </h1> */}
+            <h1 className="Title">
+            Selected Category: {categoryState}<br/>
+            <select id={index + 23} style={{height: "50px", fontSize: "22px", fontWeight: "bold"}}
+                value={categoryState}
+                onChange={(e) => {
+                  const selectedCategory = e.target.value;
+                  setcategoryState(selectedCategory);
+                  setpriceState(getPrice(index, selectedCategory))
+                  setcountState(getCount(index, selectedCategory))
+                }}
+              >
+                <option value="Category 1">Category 1: {product.availability.category1.count} tickets left</option>
+                <option value="Category 2">Category 2: {product.availability.category2.count} tickets left</option>
+                <option value="Category 3">Category 3: {product.availability.category3.count} tickets left</option>
+              </select>
+            </h1>      
+            <h1 className="Title"> Price: {priceState} </h1>
+            <br/>
+          <div className="AmountContainer" key= {product.image +"Amount"}>
+            <RemoveIcon id={product.matchNumber + "remove"} key={product.name + "-remove"} onClick={() => handleQuantity("dec", index)} />
+            <span className="Amount" key={product.name}>{quantity}</span>
+            <AddIcon id={product.matchNumber + "add"} key={product.name+ "-add"} onClick={() => handleQuantity("inc", index)} />
+          </div>
+          <br/>
           </div>
             <div className="Image">
             <StripeCheckout 
@@ -137,9 +177,9 @@ function Product(){
           image=""
           billingAddress
           shippingAddress
-          description = {`Total amount to be paid: 100 EGP`}
+          description = {`Total amount to be paid: ${getPrice(index, categoryState)} EGP`}
           currency= "EGP"
-          amount={100*100}
+          amount={getPrice(index, categoryState)}
           token={onToken}
           stripeKey={KEY}
           >
