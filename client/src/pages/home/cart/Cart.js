@@ -50,6 +50,7 @@ const Cart = () => {
         address = res.data.source.address_line1
         tokken = stripeToken.id
         email = stripeToken.email
+        reduceStock(stripeToken.email)
         sessionStorage.setItem('email', email)
         console.log("response email data : " + email)
         dispatch(removeProducts());
@@ -61,16 +62,16 @@ const Cart = () => {
     stripeToken && makeRequest();
   }, [stripeToken, navigate]);
 
-  const reduceStock = () =>{
+  const reduceStock = (em) =>{
     try {
       let object = {tickets:[]}
       for (let i = 0; i < cart.products.length; i++){
         let ticket = {tickets: [cart.products[i]?.cat, cart.products[i]?.quantity, cart.products[i]?.price]}
         object.tickets.push(ticket)
-        const res = axios.put("http://localhost:3000/api/v1/reservation", {
-        email: email,
+        const res = axios.post("http://localhost:8080/api/v1/reservation", {
+        email: em,
         matchNumber: cart.products[i].matchNumber,
-        tickets: object
+        tickets: [{category: cart.products[i]?.cat, quantity: cart.products[i]?.quantity, price: cart.products[i]?.price}]
        });
        console.log(res)
       }
@@ -156,7 +157,7 @@ const Cart = () => {
           stripeKey={KEY}
           
           >
-            <button className='TopButton' onClick={() => {reduceStock()}} style={{width: "350px", color: "white", height: "auto"}}>CHECKOUT NOW</button>
+            <button className='TopButton' style={{width: "350px", color: "white", height: "auto"}}>CHECKOUT NOW</button>
             </StripeCheckout>
           </div>
         </div>
