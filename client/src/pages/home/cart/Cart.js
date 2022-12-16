@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { createContext } from "react";
 import axios from 'axios';
 import "./cart.css";
+import { message } from "antd";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -30,8 +31,8 @@ const Cart = () => {
 
   const verifyCartItems = () => {
     if(cart.total === 0){
-      let txt = ""
-      window.alert("Your cart is empty ! Redirecting to catalog...")
+      message.error("Your cart is empty ! Redirecting to catalog...")
+      alert("Your cart is empty ! Redirecting to catalog...")
       window.location.replace("/product");
       return;
     }
@@ -40,13 +41,12 @@ const Cart = () => {
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        const res = await axios.post("/checkout/payment", {
+        const res = await axios.post("http://localhost:5000/api/checkout/payment", {
           tokenId: stripeToken.id,
           amount: cart.total * 100,
         });
-        alert("Payment Success ! Redirecting to your Orders...")
+        message.success(`Payment Success ! Ticket holder email: ${stripeToken.email}`, 3)
         sessionStorage.setItem('currentUser', '1');
-        navigate("/Order", {state: {stripeData: stripeToken.id, products: cart}});
         address = res.data.source.address_line1
         tokken = stripeToken.id
         email = stripeToken.email
@@ -54,12 +54,30 @@ const Cart = () => {
         console.log("response email data : " + email)
         dispatch(removeProducts());
       } catch(err){
-    
+        message.error("Payment Failed, Please try again !")
         console.log(err.response);
     }
     };
     stripeToken && makeRequest();
   }, [stripeToken, navigate]);
+
+  const reduceStock = () =>{
+    try {
+      let object = {tickets:[]}
+      for (let i = 0; i < cart.products.length; i++){
+        let ticket = {tickets: [cart.products[i]?.cat, cart.products[i]?.quantity, cart.products[i]?.price]}
+        object.tickets.push(ticket)
+        const res = axios.put("http://localhost:3000/api/v1/reservation", {
+        email: email,
+        matchNumber: cart.products[i].matchNumber,
+        tickets: object
+       });
+       console.log(res)
+      }
+    } catch (err){
+      console.log(err.response);
+  }
+  }
 
   return (
     <div>
@@ -138,7 +156,7 @@ const Cart = () => {
           stripeKey={KEY}
           
           >
-            <button className='TopButton' style={{width: "350px", color: "white", height: "auto"}}>CHECKOUT NOW</button>
+            <button className='TopButton' onClick={() => {reduceStock()}} style={{width: "350px", color: "white", height: "auto"}}>CHECKOUT NOW</button>
             </StripeCheckout>
           </div>
         </div>

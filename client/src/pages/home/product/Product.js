@@ -20,6 +20,7 @@ function Product(){
   const [categoryState, setcategoryState] = useState("Category 1");
   const [priceState, setpriceState] = useState(75);
   const [countState, setcountState] = useState();
+  const [flag, setFlag] = useState(false);
   const dispatch = useDispatch();
   const onToken = (token) => {
     setStripeToken(token);
@@ -29,24 +30,27 @@ function Product(){
   let currentPendingTickets = "";
 
 
-  const handleCart = (index, type)=>{
-    if(type === "Category 1"){
+  const handleCart = (index, type, flag)=>{
+    if(type === "Category 1" && !flag){
       dispatch(
-        addProduct({ product, id: product[index]._id, cat: "cat 1", matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category1.price*quantity, quantity, total:  product.forEach.price*quantity})
+        addProduct({ product, id: product[index]._id, cat: 1, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category1.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
+        setFlag(true);
     }
-    else if(type === "Category 2"){
+    else if(type === "Category 2" && !flag){
       dispatch(
-        addProduct({ product, id: product[index]._id, cat: "cat 2", matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category2.price*quantity, quantity, total:  product.forEach.price*quantity})
+        addProduct({ product, id: product[index]._id, cat: 2, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category2.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
+        setFlag(true);
     }
-    else if(type === "Category 3"){
+    else if(type === "Category 3" && !flag){
       dispatch(
-        addProduct({ product, id: product[index]._id, cat: "cat 3", matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category3.price*quantity, quantity, total:  product.forEach.price*quantity})
+        addProduct({ product, id: product[index]._id, cat: 3, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category3.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
+        setFlag(true);
     }
     else{
     return(message.error("Item is currently not available !"));
@@ -80,50 +84,6 @@ function Product(){
         })
     },[])
 
-    useEffect(() => {
-      const makeRequest = async () => {
-        try {
-          const res = await axios.post("http://localhost:5000/api/checkout/payment", {
-            tokenId: stripeToken.id,
-            amount: 100*100,
-          });
-          message.success(`Payment Success ! Ticket holder email: ${stripeToken.email}`, 3)
-          let email = stripeToken.email
-          sessionStorage.setItem('email', email)
-          console.log("response email data : " + email)
-          createReservation();
-        } catch(err){
-          message.error('Payment Failed ! Please try again !', 3)
-          console.log(err.response);
-      }
-      };
-      stripeToken && makeRequest();
-    }, [stripeToken]);
-  
-    const createReservation = async () => {
-      let showDate = new Date()
-      let displayDate = showDate.getDate() +'/'+ (showDate.getMonth() + 1) +'/'+ showDate.getFullYear()
-      try {
-        const res = await axios.post("http://localhost:5000/api/reservations", {
-          ticketID: "testTicket",
-          DatePurchased: displayDate,
-          userEmail: stripeToken.email
-        });
-      }
-      catch (err){
-        console.log(err.response);
-    }
-    }
-
-    const reduceStock = (id, pending) =>{
-      try {
-        const res = axios.put(`http://localhost:5000/api/matches/${id}`, {
-          NumberOfPendingTickets: pending + 1,
-        });
-      } catch (err){
-        console.log(err.response);
-    }
-    }
 
     const getPrice = (mNumber, category) =>{
       if(category === "Category 1")
@@ -189,7 +149,7 @@ function Product(){
           <br/>
           </div>
             <div className="Im">
-            <img id={product._id} key={product._id} onClick={() => handleCart(index, categoryState)} src="https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans"/>
+            <img id={product._id} key={product._id} onClick={() => handleCart(index, categoryState, flag)} src="https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans"/>
             </div>
         </div>
       </div>)
