@@ -77,13 +77,19 @@ const Cart = () => {
 
           {cart.products.map(product=>(<div className='Product'>
             <div className='ProductDetail'>
-            <img className='Image' img src={product.image} />
+            <img className='Image' img src={"https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans"} />
               <div className='Details'>
                 <span>
-                  <b>Product:</b> {product.name}
+                  <b>Match Number:</b> {product.matchNumber}
+                </span>
+                <span>
+                <b>Game:</b> {product.homeTeam} VS {product.awayTeam}
                 </span>
                 <span>
                   <b>Quantity:</b> {product.quantity}
+                </span>
+                <span>
+                  <b>Category:</b> {product.cat}
                 </span>
               </div>
             </div>
@@ -121,7 +127,7 @@ const Cart = () => {
               
             </div>
             <StripeCheckout 
-          name= "Rabbit supermarket"
+          name= "FIFA - World Cup 2022™"
           image=""
           billingAddress
           shippingAddress

@@ -27,18 +27,31 @@ function Product(){
   console.log(stripeToken);
   let currentProduct = "";
   let currentPendingTickets = "";
-//  const dispatch = useDispatch();
 
 
-// const handleCart = (index, type)=>{
-
-//   if(product[index].stock < 1)
-//   return(alert("Item is currently not available !"));
-//   dispatch(
-//   addProduct({ product, id: product[index]._id, stock: product[index].stock, name: product[index].name, image: product[index].image, price: product[index].price*quantity, quantity, total:  product.forEach.price*quantity})
-//   )
-//   alert("Added to cart successfully !");
-// }
+  const handleCart = (index, type)=>{
+    if(type === "Category 1"){
+      dispatch(
+        addProduct({ product, id: product[index]._id, cat: "cat 1", matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category1.price*quantity, quantity, total:  product.forEach.price*quantity})
+        )
+        message.success("Added to cart successfully !");
+    }
+    else if(type === "Category 2"){
+      dispatch(
+        addProduct({ product, id: product[index]._id, cat: "cat 2", matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category2.price*quantity, quantity, total:  product.forEach.price*quantity})
+        )
+        message.success("Added to cart successfully !");
+    }
+    else if(type === "Category 3"){
+      dispatch(
+        addProduct({ product, id: product[index]._id, cat: "cat 3", matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category3.price*quantity, quantity, total:  product.forEach.price*quantity})
+        )
+        message.success("Added to cart successfully !");
+    }
+    else{
+    return(message.error("Item is currently not available !"));
+    }
+  }
 
 
 
@@ -176,19 +189,7 @@ function Product(){
           <br/>
           </div>
             <div className="Im">
-            <StripeCheckout 
-          name= "Tickets - FIFA World Cup Qatar 2022™"
-          image=""
-          billingAddress
-          shippingAddress
-          description = {`Total amount to be paid: ${getPrice(index, categoryState)} EGP`}
-          currency= "EGP"
-          amount={getPrice(index, categoryState)}
-          token={onToken}
-          stripeKey={KEY}
-          >
-            <img id={product._id} key={product._id} onClick={()=>{reduceStock(product._id, product.NumberOfPendingTickets)}} src="https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans"/>
-            </StripeCheckout>
+            <img id={product._id} key={product._id} onClick={() => handleCart(index, categoryState)} src="https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans"/>
             </div>
         </div>
       </div>)
