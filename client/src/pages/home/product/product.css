@@ -3,12 +3,12 @@
   color: #ffffff;
 }
 
-.wrapper{
+.wrap{
   padding: 50px;
   display: flex;
 }
 
-.info {
+.in {
   flex: 1;
   padding: 0px 50px;
 }
@@ -18,7 +18,7 @@
   display: flex;
 }
 
-.Image img {
+.Im img {
   height: 200px;
   padding: 0px;
   margin: 16px 0px;
@@ -26,13 +26,13 @@
   cursor: pointer;
 }
 
-.Image img:hover {
+.Im img:hover {
   transform: scale(1.1);
   transition: transform .2s;
 }
 
 
-.Title{
+.Ti{
   font-weight: 200;
 }
 
@@ -46,13 +46,13 @@
   margin-top: 100px;
 }
 
-.AmountContainer{
+.Am{
   display: flex;
   align-items: center;
   font-weight: 700;
 }
 
-.Amount{
+.A{
   width: 30px;
   height: 30px;
   border-radius: 10px;

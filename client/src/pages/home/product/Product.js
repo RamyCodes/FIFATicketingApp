@@ -7,6 +7,9 @@ import StripeCheckout from "react-stripe-checkout";
 import { message } from "antd";
 import  AddIcon from '@mui/icons-material/Add';
 import  RemoveIcon from '@mui/icons-material/Remove';
+import { addProduct } from "../../../redux/cartRedux";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 const KEY = "pk_test_51Kz0mQCAdufLrSrfWGUsQ9RrhPoNSZbzvVqtkZuUTNTAP5TqUcZELqguSxM1QXfWPTPuIIx6PBZ7JV86U7wPDPrn00qaqkrqay";
 
@@ -17,6 +20,7 @@ function Product(){
   const [categoryState, setcategoryState] = useState("Category 1");
   const [priceState, setpriceState] = useState(75);
   const [countState, setcountState] = useState();
+  const dispatch = useDispatch();
   const onToken = (token) => {
     setStripeToken(token);
   };
@@ -26,7 +30,7 @@ function Product(){
 //  const dispatch = useDispatch();
 
 
-// const handleCart = (index)=>{
+// const handleCart = (index, type)=>{
 
 //   if(product[index].stock < 1)
 //   return(alert("Item is currently not available !"));
@@ -129,8 +133,8 @@ function Product(){
   return(
     <div className="main">
     <Navbar />          
-    <div className="wrapper">
-      <div className="info">
+    <div className="wrap">
+      <div className="in">
        {         
       <ul>
         {
@@ -142,11 +146,11 @@ function Product(){
             <br/><br/><h1> Match {index +1}</h1><br/>
         <div id={product._id + index} key={product._id + index} style={{display: "flex", justifyContent: "space-between"}}> 
           <div>
-            <h1 className="Title"> Game: {product.homeTeam} VS {product.awayTeam} </h1>
-            <h1 className="Title"> Round Number: {product.roundNumber} </h1>
-            <h1 className="Title"> DateUtc: {product.dateUtc} </h1>
-            <h1 className="Title"> Location: {product.location} </h1>
-            <h1 className="Title">
+            <h1 className="Ti"> Game: {product.homeTeam} VS {product.awayTeam} </h1>
+            <h1 className="Ti"> Round Number: {product.roundNumber} </h1>
+            <h1 className="Ti"> DateUtc: {product.dateUtc} </h1>
+            <h1 className="Ti"> Location: {product.location} </h1>
+            <h1 className="Ti">
             Selected Category: {categoryState}<br/>
             <select id={index + 23} style={{height: "50px", fontSize: "22px", fontWeight: "bold"}}
                 value={categoryState}
@@ -162,16 +166,16 @@ function Product(){
                 <option value="Category 3">Category 3: {product.availability.category3.count} tickets left</option>
               </select>
             </h1>      
-            <h1 className="Title"> Price: {priceState} </h1>
+            <h1 className="Ti"> Price: {priceState} </h1>
             <br/>
-          <div className="AmountContainer" key= {product.image +"Amount"}>
+          <div className="Am" key= {product.image +"Amount"}>
             <RemoveIcon id={product.matchNumber + "remove"} key={product.name + "-remove"} onClick={() => handleQuantity("dec", index)} />
-            <span className="Amount" key={product.name}>{quantity}</span>
+            <span className="A" key={product.name}>{quantity}</span>
             <AddIcon id={product.matchNumber + "add"} key={product.name+ "-add"} onClick={() => handleQuantity("inc", index)} />
           </div>
           <br/>
           </div>
-            <div className="Image">
+            <div className="Im">
             <StripeCheckout 
           name= "Tickets - FIFA World Cup Qatar 2022™"
           image=""
