@@ -139,7 +139,7 @@ function Product(){
                 <option value="Category 3">Category 3: {product.availability.category3.count} tickets left</option>
               </select>
             </h1>      
-            <h1 className="Ti"> Price: {priceState} </h1>
+            <h1 className="Ti"> Price: {priceState*quantity} </h1>
             <br/>
           <div className="Am" key= {product.image +"Amount"}>
             <RemoveIcon id={product.matchNumber + "remove"} key={product.name + "-remove"} onClick={() => handleQuantity("dec", index)} />

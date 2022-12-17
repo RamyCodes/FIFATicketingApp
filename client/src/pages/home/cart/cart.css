@@ -1,5 +1,8 @@
 .Wrapper{
   padding: 20px;
+  background-color: #020f2a;
+  color: #ffffff;
+  height: 900px;
 }
 
 .Title{
@@ -16,11 +19,11 @@
 
 .TopButton{
   padding: 30px;
-  font-weight: 600;
+  width: auto;
   cursor: pointer;
-  /* border: ${(props) => props.type === "filled" && "none"}; */
-  background-color: black;
+  background-color: white;
   color: black;
+  height: auto;
 }
 
 
@@ -88,15 +91,15 @@
 .Hr{
   background-color: #eee;
   border: none;
-  height: 1px;
+  height: 0.5px;
 }
 
 .Summary{
   flex: 1;
-  border: 0.5px solid black;
+  border: 0.5px solid white;
   border-radius: 10px;
   padding: 20px;
-  height: 30vh;
+  height: auto;
 }
 
 .SummaryTitle{
@@ -112,9 +115,9 @@
 }
 
 .Button{
-  width: 100%;
-  padding: 10px;
-  background-color: green;
+  width: auto;
+  padding: 20px;
+  background-color: white;
   color: white;
   font-weight: 600;
 }

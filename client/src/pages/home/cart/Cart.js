@@ -86,8 +86,8 @@ const Cart = () => {
       <div className='Wrapper'>
         <h1 className='Title'>Your cart</h1>
         <div className='Top'>
-        <Link style={{color: "white", background: "white"}} to={`/Product`}>
-          <button className='TopButton' style={{width: "350px", color: "white", height: "auto"}}>GO BACK TO CATALOG</button>
+        <Link to={`/Product`}>
+          <button className='Button' style={{width: "250px", color: "black", height: "auto"}}>GO BACK TO CATALOG</button>
           </Link>
         </div>
         <div className='Bottom'>
@@ -127,24 +127,26 @@ const Cart = () => {
           <div className='Summary'>
             <h1 className='SummaryTitle'>Order Details</h1>
             <div className='SummaryItem'>
-              <span>Subtotal</span>
-              <span>{parseInt(cart.total)} EGP</span>
-            </div>
+                <span> Subtotal</span>
+              </div>
+            {cart.products.map(product=>  (
+              <div className='SummaryItem'>
+                <span> {product.homeTeam} VS {product.awayTeam} (X{product.quantity}) {product.price} EGP</span>
+              </div>
+            ))}
             <div className='SummaryItem'>
               <span>Estimated Shipping</span>
               <span>0 EGP</span>
             </div>
             <div className='SummaryItem'>
-            </div>
-            <div className='SummaryItem' type="total">
               <b>
               <span>Total</span>
               </b>
               <b>
               <span>{parseInt(cart.total)} EGP</span>
               </b>
-              
             </div>
+            
             <StripeCheckout 
           name= "FIFA - World Cup 2022™"
           image=""
@@ -157,7 +159,7 @@ const Cart = () => {
           stripeKey={KEY}
           
           >
-            <button className='TopButton' style={{width: "350px", color: "white", height: "auto"}}>CHECKOUT NOW</button>
+            <button className='TopButton' style={{width: "350px", height: "auto"}}>CHECKOUT NOW</button>
             </StripeCheckout>
           </div>
         </div>
