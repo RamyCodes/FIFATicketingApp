@@ -158,7 +158,7 @@ const Cart = () => {
           stripeKey={KEY}
           
           >
-            <button className='TopButton' onClick={verifyCartItems()} style={{width: "350px", height: "auto"}}>CHECKOUT NOW</button>
+            <button className='TopButton' style={{width: "350px", height: "auto"}}>CHECKOUT NOW</button>
             </StripeCheckout>
           </div>
         </div>

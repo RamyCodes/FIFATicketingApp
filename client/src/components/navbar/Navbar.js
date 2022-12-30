@@ -3,9 +3,20 @@ import {Link} from 'react-router-dom';
 import { useSelector } from "react-redux";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Badge from '@mui/material/Badge';
+import { useState } from "react";
 
 const Navbar = () => {
   const quantity = useSelector(state => state.cart.quantity)
+  const cart = useSelector((state) => state.cart)
+  const [place, setPlace] = useState("cart");
+
+  const verifyCartItems = () => {
+    if(cart.total === 0){
+      window.alert("Your cart is empty ! Redirecting to catalog...")
+      window.location.replace("/product");
+    }
+  }
+
   return (
     <div className="header">
         <div className="header-logo">
@@ -21,7 +32,7 @@ const Navbar = () => {
             <Link to={'/Tickets'}>
             <button>My Tickets</button>
             </Link>
-            <Link style={{color: "black"}} to={`/Cart`}>
+            <Link onClick={verifyCartItems} style={{color: "black"}} to={`/${place}`}>
             <Badge badgeContent ={quantity} color="primary">
             <ShoppingCartOutlinedIcon style={{fontSize:"35px", color:"white"}}/>
             </Badge>
