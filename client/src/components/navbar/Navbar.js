@@ -18,6 +18,9 @@ const Navbar = () => {
         </div>
         <div className="header-buttons">
             <button>Login</button>
+            <Link to={'/Tickets'}>
+            <button>My Tickets</button>
+            </Link>
             <Link style={{color: "black"}} to={`/Cart`}>
             <Badge badgeContent ={quantity} color="primary">
             <ShoppingCartOutlinedIcon style={{fontSize:"35px", color:"white"}}/>

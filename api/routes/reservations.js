@@ -18,7 +18,15 @@ router.post("/", async(req, res, next) => {
   //GET all
 router.get("/", async(req, res, next) => {
     try {
-        const reservations = await Reservation.find();
+        var qEmail = req.query.email;
+        let reservations;
+        if (qEmail) {
+          reservations = await Reservation.find({email: qEmail}
+          )}
+    
+        else {  
+          reservations = await Reservation.find();
+        }
         res.status(200).json(reservations);
       } catch (err) {
         next(err);
