@@ -63,15 +63,13 @@ const Cart = () => {
 
   const reduceStock = (em) =>{
     try {
-      let object = {tickets:[]}
       for (let i = 0; i < cart.products.length; i++){
-        let ticket = {tickets: [cart.products[i]?.cat, cart.products[i]?.quantity, cart.products[i]?.price]}
-        object.tickets.push(ticket)
-        const res = axios.post("http://localhost:8080/api/v1/reservation", {
+        const res = axios.post("https://reservations-microservice.onrender.com/api/v1/reservation", {
         email: em,
         matchNumber: cart.products[i].matchNumber,
-        tickets: [{category: cart.products[i]?.cat, quantity: cart.products[i]?.quantity, price: cart.products[i]?.price}]
-       });
+        tickets: {category: cart.products[i]?.cat, quantity: cart.products[i]?.quantity, price: cart.products[i]?.price},
+        card: {number: "4242424242424242", expirationMonth: 12, expirationYear: 2024, cvc: "123"}
+      });
        console.log(res)
       }
     } catch (err){
