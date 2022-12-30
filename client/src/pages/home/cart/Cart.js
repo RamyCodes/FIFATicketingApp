@@ -31,8 +31,7 @@ const Cart = () => {
 
   const verifyCartItems = () => {
     if(cart.total === 0){
-      message.error("Your cart is empty ! Redirecting to catalog...")
-      alert("Your cart is empty ! Redirecting to catalog...")
+      window.alert("Your cart is empty ! Redirecting to catalog...")
       window.location.replace("/product");
       return;
     }
@@ -64,13 +63,15 @@ const Cart = () => {
 
   const reduceStock = (em) =>{
     try {
+      let object = {tickets:[]}
       for (let i = 0; i < cart.products.length; i++){
-        const res = axios.post("https://sp-2-reservations-microservice.vercel.app/api/v1/reservation", {
+        let ticket = {tickets: [cart.products[i]?.cat, cart.products[i]?.quantity, cart.products[i]?.price]}
+        object.tickets.push(ticket)
+        const res = axios.post("http://localhost:8080/api/v1/reservation", {
         email: em,
         matchNumber: cart.products[i].matchNumber,
-        tickets: {category: cart.products[i]?.cat, quantity: cart.products[i]?.quantity, price: cart.products[i]?.price},
-        card: {number: "4242424242424242", expirationMonth: 12, expirationYear: 2024, cvc: "123"}
-      });
+        tickets: [{category: cart.products[i]?.cat, quantity: cart.products[i]?.quantity, price: cart.products[i]?.price}]
+       });
        console.log(res)
       }
     } catch (err){
@@ -157,7 +158,7 @@ const Cart = () => {
           stripeKey={KEY}
           
           >
-            <button className='TopButton' onClick={reduceStock("testDeployment")} style={{width: "350px", height: "auto"}}>CHECKOUT NOW</button>
+            <button className='TopButton' onClick={verifyCartItems()} style={{width: "350px", height: "auto"}}>CHECKOUT NOW</button>
             </StripeCheckout>
           </div>
         </div>
