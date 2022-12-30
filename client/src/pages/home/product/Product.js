@@ -74,7 +74,7 @@ function Product(){
   }
 
   useEffect(()=> {
-    axios.get(`http://localhost:5000/api/matches`)
+    axios.get(`https://fifaback.onrender.com/api/matches`)
         .then( res => {
           console.log(res)
           setProduct(res.data)
