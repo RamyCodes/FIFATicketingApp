@@ -20,37 +20,34 @@ function Product(){
   const [categoryState, setcategoryState] = useState("Category 1");
   const [priceState, setpriceState] = useState(75);
   const [countState, setcountState] = useState();
-  const [flag, setFlag] = useState(false);
   const dispatch = useDispatch();
   const onToken = (token) => {
     setStripeToken(token);
   };
-  console.log(stripeToken);
-  let currentProduct = "";
-  let currentPendingTickets = "";
+  sessionStorage.setItem("flag", "true")
 
-
-  const handleCart = (index, type, flag)=>{
-    if(type === "Category 1" && !flag){
+  const handleCart = (index, type)=>{
+    let flag = sessionStorage.getItem("flag")
+    if(type === "Category 1" && flag === "true"){
       dispatch(
         addProduct({ product, id: product[index]._id, cat: 1, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category1.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
-        setFlag(true);
+        sessionStorage.setItem("flag", "false");
     }
-    else if(type === "Category 2" && !flag){
+    else if(type === "Category 2" && flag === "true"){
       dispatch(
         addProduct({ product, id: product[index]._id, cat: 2, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category2.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
-        setFlag(true);
+        sessionStorage.setItem("flag", "false");
     }
-    else if(type === "Category 3" && !flag){
+    else if(type === "Category 3" && flag === "true"){
       dispatch(
         addProduct({ product, id: product[index]._id, cat: 3, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category3.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
-        setFlag(true);
+        sessionStorage.setItem("flag", "false");
     }
     else{
     return(message.error("Item is currently not available !"));
@@ -149,7 +146,7 @@ function Product(){
           <br/>
           </div>
             <div className="Im">
-            <img id={product._id} key={product._id} onClick={() => handleCart(index, categoryState, flag)} src="https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans"/>
+            <img id={product._id} key={product._id} onClick={() => handleCart(index, categoryState)} src="https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans"/>
             </div>
         </div>
       </div>)
