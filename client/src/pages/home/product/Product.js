@@ -10,6 +10,7 @@ import  RemoveIcon from '@mui/icons-material/Remove';
 import { addProduct } from "../../../redux/cartRedux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 const KEY = "pk_test_51Kz0mQCAdufLrSrfWGUsQ9RrhPoNSZbzvVqtkZuUTNTAP5TqUcZELqguSxM1QXfWPTPuIIx6PBZ7JV86U7wPDPrn00qaqkrqay";
 
@@ -20,29 +21,32 @@ function Product(){
   const [categoryState, setcategoryState] = useState("Category 1");
   const [priceState, setpriceState] = useState(75);
   const [countState, setcountState] = useState();
+  const cart = useSelector((state) => state.cart)
+
   const dispatch = useDispatch();
   const onToken = (token) => {
     setStripeToken(token);
   };
-  sessionStorage.setItem("flag", "true")
 
   const handleCart = (index, type)=>{
-    let flag = sessionStorage.getItem("flag")
-    if(type === "Category 1" && flag === "true"){
+    if(cart.total > 0){
+    return(message.error("You can only add 1 ticket for each order !"));
+    }
+    if(type === "Category 1"){
       dispatch(
         addProduct({ product, id: product[index]._id, cat: 1, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category1.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
         sessionStorage.setItem("flag", "false");
     }
-    else if(type === "Category 2" && flag === "true"){
+    else if(type === "Category 2"){
       dispatch(
         addProduct({ product, id: product[index]._id, cat: 2, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category2.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
         sessionStorage.setItem("flag", "false");
     }
-    else if(type === "Category 3" && flag === "true"){
+    else if(type === "Category 3"){
       dispatch(
         addProduct({ product, id: product[index]._id, cat: 3, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category3.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
