@@ -64,6 +64,14 @@ const Cart = () => {
   const reduceStock = (em) =>{
     try {
       for (let i = 0; i < cart.products.length; i++){
+        // post sale in reservations db
+        const res2 = axios.post("https://fifaback.onrender.com/api/reservations", {
+        email: em,
+        matchNumber: cart.products[i].matchNumber,
+        tickets: {category: cart.products[i]?.cat, quantity: cart.products[i]?.quantity, price: cart.products[i]?.price},
+        card: {number: "4242424242424242", expirationMonth: 12, expirationYear: 2024, cvc: "123"}
+        })
+        // post sale on kafka (and from kafka update the master list)
         const res = axios.post("https://reservations-microservice.onrender.com/api/v1/reservation", {
         email: em,
         matchNumber: cart.products[i].matchNumber,
