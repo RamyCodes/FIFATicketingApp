@@ -32,26 +32,23 @@ function Product(){
     if(cart.total > 0){
     return(message.error("You can only add 1 ticket for each order !"));
     }
-    if(type === "Category 1"){
+    if(type === "Category 1" && product[index].availability.category1.count > 0 && product[index].availability.category1.pending < product[index].availability.category1.count){
       dispatch(
         addProduct({ product, id: product[index]._id, cat: 1, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category1.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
-        sessionStorage.setItem("flag", "false");
     }
-    else if(type === "Category 2"){
+    else if(type === "Category 2" && product[index].availability.category2.count > 0 && product[index].availability.category2.pending < product[index].availability.category2.count){
       dispatch(
         addProduct({ product, id: product[index]._id, cat: 2, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category2.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
-        sessionStorage.setItem("flag", "false");
     }
-    else if(type === "Category 3"){
+    else if(type === "Category 3" && product[index].availability.category3.count > 0 && product[index].availability.category3.pending < product[index].availability.category3.count){
       dispatch(
         addProduct({ product, id: product[index]._id, cat: 3, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category3.price*quantity, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
-        sessionStorage.setItem("flag", "false");
     }
     else{
     return(message.error("Item is currently not available !"));
@@ -60,17 +57,33 @@ function Product(){
 
 
 
-  const handleQuantity = (type, mNumber) =>{
-    if(product[mNumber].availability.category1.count === 0)
-    return(message.error("Item is currently not available !"));
+  const handleQuantity = (type, mNumber, category) =>{
+    if(category === "Category 1" && product[mNumber].availability.category1.count > 0){
     if(type === "dec"){
-    quantity > 1 && setQuantity(quantity - 1);
+      quantity > 1 && setQuantity(quantity - 1);
+      }
+      else if(quantity < product[mNumber].availability.category1.count && quantity < 2){
+        setQuantity(quantity + 1);
+      }
     }
-    else if(quantity < product[mNumber].availability.category1.count && quantity < 2){
-      setQuantity(quantity + 1);
+    else if(category === "Category 2" && product[mNumber].availability.category2.count > 0){
+      if(type === "dec"){
+        quantity > 1 && setQuantity(quantity - 1);
+        }
+        else if(quantity < product[mNumber].availability.category2.count && quantity < 2){
+          setQuantity(quantity + 1);
+        }
     }
+    else if(category === "Category 3" && product[mNumber].availability.category3.count > 0){
+      if(type === "dec"){
+        quantity > 1 && setQuantity(quantity - 1);
+        }
+        else if(quantity < product[mNumber].availability.category3.count && quantity < 2){
+          setQuantity(quantity + 1);
+        }
+    }    
     else{
-      message.error("You can't get more tickets!")
+      return(message.error("Item is currently not available !"));
     }
   }
 
@@ -135,17 +148,17 @@ function Product(){
                   setcountState(getCount(index, selectedCategory))
                 }}
               >
-                <option value="Category 1">Category 1: {product.availability.category1.count} tickets left</option>
-                <option value="Category 2">Category 2: {product.availability.category2.count} tickets left</option>
-                <option value="Category 3">Category 3: {product.availability.category3.count} tickets left</option>
+                <option value="Category 1">Category 1: {product.availability.category1.count} tickets available, {product.availability.category1.pending} pending</option>
+                <option value="Category 2">Category 2: {product.availability.category2.count} tickets available, {product.availability.category2.pending} pending</option>
+                <option value="Category 3">Category 3: {product.availability.category3.count} tickets available, {product.availability.category3.pending} pending</option>
               </select>
             </h1>      
             <h1 className="Ti"> Price: {priceState*quantity} </h1>
             <br/>
           <div className="Am" key= {product.image +"Amount"}>
-            <RemoveIcon id={product.matchNumber + "remove"} key={product.name + "-remove"} onClick={() => handleQuantity("dec", index)} />
+            <RemoveIcon id={product.matchNumber + "remove"} key={product.name + "-remove"} onClick={() => handleQuantity("dec", index, categoryState)} />
             <span className="A" key={product.name}>{quantity}</span>
-            <AddIcon id={product.matchNumber + "add"} key={product.name+ "-add"} onClick={() => handleQuantity("inc", index)} />
+            <AddIcon id={product.matchNumber + "add"} key={product.name+ "-add"} onClick={() => handleQuantity("inc", index, categoryState)} />
           </div>
           <br/>
           </div>
