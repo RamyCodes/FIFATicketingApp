@@ -34,19 +34,19 @@ function Product(){
     }
     if(type === "Category 1" && product[index].availability.category1.count > 0 && product[index].availability.category1.pending < product[index].availability.category1.count){
       dispatch(
-        addProduct({ product, id: product[index]._id, cat: 1, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category1.price*quantity, quantity, total:  product.forEach.price*quantity})
+        addProduct({ product, id: product[index]._id, cat: 1, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category1.price, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
     }
     else if(type === "Category 2" && product[index].availability.category2.count > 0 && product[index].availability.category2.pending < product[index].availability.category2.count){
       dispatch(
-        addProduct({ product, id: product[index]._id, cat: 2, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category2.price*quantity, quantity, total:  product.forEach.price*quantity})
+        addProduct({ product, id: product[index]._id, cat: 2, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category2.price, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
     }
     else if(type === "Category 3" && product[index].availability.category3.count > 0 && product[index].availability.category3.pending < product[index].availability.category3.count){
       dispatch(
-        addProduct({ product, id: product[index]._id, cat: 3, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category3.price*quantity, quantity, total:  product.forEach.price*quantity})
+        addProduct({ product, id: product[index]._id, cat: 3, matchNumber: product[index].matchNumber, homeTeam: product[index].homeTeam, awayTeam: product[index].awayTeam, price: product[index].availability.category3.price, quantity, total:  product.forEach.price*quantity})
         )
         message.success("Added to cart successfully !");
     }
@@ -130,7 +130,7 @@ function Product(){
             <br/>
             <br/>
             <hr size="2" width="90%" color="white"/>
-            <br/><br/><h1> Match {index +1}</h1><br/>
+            <br/><br/><h1> Match {product.matchNumber}</h1><br/>
         <div id={product._id + index} key={product._id + index} style={{display: "flex", justifyContent: "space-between"}}> 
           <div>
             <h1 className="Ti"> Game: {product.homeTeam} VS {product.awayTeam} </h1>

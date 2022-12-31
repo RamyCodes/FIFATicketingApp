@@ -42,7 +42,7 @@ const Cart = () => {
       try {
         const res = await axios.post("https://fifaback.onrender.com/api/checkout/payment", {
           tokenId: stripeToken.id,
-          amount: cart.total * 100,
+          amount: cart.total * cart.products[0]?.quantity * 100,
         });
         message.success(`Payment Success ! Ticket holder email: ${stripeToken.email}`, 3)
         sessionStorage.setItem('currentUser', '1');
@@ -148,7 +148,7 @@ const Cart = () => {
               <span>Total</span>
               </b>
               <b>
-              <span>{parseInt(cart.total)} EGP</span>
+              <span>{parseInt(cart.total*cart.products[0]?.quantity)} EGP</span>
               </b>
             </div>
             
@@ -157,9 +157,9 @@ const Cart = () => {
           image=""
           billingAddress
           shippingAddress
-          description = {`Total amount to be paid: ${parseInt(cart.total)} EGP`}
+          description = {`Total amount to be paid: ${parseInt(cart.total*cart.products[0]?.quantity)} EGP`}
           currency= "EGP"
-          amount={parseInt(cart.total)*100}
+          amount={parseInt(cart.total)*cart.products[0]?.quantity * 100}
           token={onToken}
           stripeKey={KEY}
           
