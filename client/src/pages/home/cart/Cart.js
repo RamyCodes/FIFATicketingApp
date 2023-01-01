@@ -37,21 +37,12 @@ const Cart = () => {
     }
   }
 
+
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        const res = await axios.post("https://fifaback.onrender.com/api/checkout/payment", {
-          tokenId: stripeToken.id,
-          amount: cart.total * cart.products[0]?.quantity * 100,
-        });
+        reduceStock();
         message.success(`Payment Success ! Ticket holder email: ${stripeToken.email}`, 3)
-        sessionStorage.setItem('currentUser', '1');
-        address = res.data.source.address_line1
-        tokken = stripeToken.id
-        email = stripeToken.email
-        reduceStock(stripeToken.email)
-        sessionStorage.setItem('email', email)
-        console.log("response email data : " + email)
         dispatch(removeProducts());
       } catch(err){
         message.error("Payment Failed, Please try again !")
@@ -61,24 +52,24 @@ const Cart = () => {
     stripeToken && makeRequest();
   }, [stripeToken, navigate]);
 
-  const reduceStock = (em) =>{
+  const reduceStock = () =>{
     try {
       for (let i = 0; i < cart.products.length; i++){
-        // post sale in reservations db
-        const res2 = axios.post("https://fifaback.onrender.com/api/reservations", {
-        email: em,
-        matchNumber: cart.products[i].matchNumber,
-        tickets: {category: cart.products[i]?.cat, quantity: cart.products[i]?.quantity, price: cart.products[i]?.price},
-        card: {number: "4242424242424242", expirationMonth: 12, expirationYear: 2024, cvc: "123"}
-        })
         // post sale on kafka (and from kafka update the master list)
         const res = axios.post("https://reservations-microservice.onrender.com/api/v1/reservation", {
-        email: em,
-        matchNumber: cart.products[i].matchNumber,
-        tickets: {category: cart.products[i]?.cat, quantity: cart.products[i]?.quantity, price: cart.products[i]?.price},
-        card: {number: "4242424242424242", expirationMonth: 12, expirationYear: 2024, cvc: "123"}
-      });
-       console.log(res)
+          email: stripeToken.email,
+          matchNumber: cart.products[i].matchNumber,
+          tickets: {category: cart.products[i]?.cat, quantity: cart.products[i]?.quantity, price: cart.products[i]?.price},
+          card: {number: "4242424242424242", expirationMonth: 12, expirationYear: 2024, cvc: "123"}
+        });
+         console.log(res)
+        // post sale in reservations db
+        const res2 = axios.post("https://fifaback.onrender.com/api/reservations", {
+          email: stripeToken.email,
+          matchNumber: cart.products[i].matchNumber,
+          tickets: {category: cart.products[i]?.cat, quantity: cart.products[i]?.quantity, price: cart.products[i]?.price},
+          card: {number: "4242424242424242", expirationMonth: 12, expirationYear: 2024, cvc: "123"}
+          })
       }
     } catch (err){
       console.log(err.response);
@@ -123,7 +114,7 @@ const Cart = () => {
                 <div className='ProductAmount'>{product.quantity}</div>
                 <RemoveIcon />
               </div>
-              <div className='ProductPrice'>{parseInt(product.price)} EGP</div>
+              <div className='ProductPrice'>{parseInt(product.price)} USD</div>
             </div>
           </div>
           ))}
@@ -136,19 +127,19 @@ const Cart = () => {
               </div>
             {cart.products.map(product=>  (
               <div className='SummaryItem'>
-                <span> {product.homeTeam} VS {product.awayTeam} (X{product.quantity}) {product.price} EGP</span>
+                <span> {product.homeTeam} VS {product.awayTeam} (X{product.quantity}) {product.price} USD</span>
               </div>
             ))}
             <div className='SummaryItem'>
               <span>Estimated Shipping</span>
-              <span>0 EGP</span>
+              <span>0 USD</span>
             </div>
             <div className='SummaryItem'>
               <b>
               <span>Total</span>
               </b>
               <b>
-              <span>{parseInt(cart.total*cart.products[0]?.quantity)} EGP</span>
+              <span>{parseInt(cart.total*cart.products[0]?.quantity)} USD</span>
               </b>
             </div>
             
@@ -157,14 +148,14 @@ const Cart = () => {
           image=""
           billingAddress
           shippingAddress
-          description = {`Total amount to be paid: ${parseInt(cart.total*cart.products[0]?.quantity)} EGP`}
-          currency= "EGP"
+          description = {`Total amount to be paid: ${parseInt(cart.total*cart.products[0]?.quantity)} USD`}
+          currency= "USD"
           amount={parseInt(cart.total)*cart.products[0]?.quantity * 100}
           token={onToken}
           stripeKey={KEY}
           
           >
-            <button className='TopButton' style={{width: "350px", height: "auto"}}>CHECKOUT NOW</button>
+            <button className='TopButton' onClick={() => {reduceStock()}} style={{width: "350px", height: "auto"}}>CHECKOUT NOW</button>
             </StripeCheckout>
           </div>
         </div>
