@@ -28,7 +28,9 @@ const Navbar = () => {
             <p>Tickets - FIFA World Cup 2022™</p>
         </div>
         <div className="header-buttons">
-            <button>Login</button>
+            <Link to={'/Stats'}>
+            <button>Stats</button>
+            </Link>
             <Link to={'/Tickets'}>
             <button>My Tickets</button>
             </Link>
