@@ -13,6 +13,7 @@ import { createContext } from "react";
 import axios from 'axios';
 import "./cart.css";
 import { message } from "antd";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -24,6 +25,12 @@ const Cart = () => {
     setStripeToken(token);
   };
   console.log(stripeToken);
+  const [verified, setVerified] = useState(false);
+  function onChange(value) {
+    console.log("Captcha value:", value);
+    setVerified(true)
+  }
+
   let address = "";
   let tokken = "ddd";
   let email = "";
@@ -134,6 +141,7 @@ const Cart = () => {
               <span>Estimated Shipping</span>
               <span>0 USD</span>
             </div>
+            <hr/>
             <div className='SummaryItem'>
               <b>
               <span>Total</span>
@@ -142,8 +150,11 @@ const Cart = () => {
               <span>{parseInt(cart.total*cart.products[0]?.quantity)} USD</span>
               </b>
             </div>
-            
-            <StripeCheckout 
+            <ReCAPTCHA style={{marginLeft: "30px", marginBottom: "20px"}}
+    sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+    onChange={onChange}
+  />
+            <StripeCheckout  disabled={!verified}
           name= "FIFA - World Cup 2022™"
           image=""
           billingAddress
@@ -155,7 +166,7 @@ const Cart = () => {
           stripeKey={KEY}
           
           >
-            <button className='TopButton' onClick={() => {reduceStock()}} style={{width: "350px", height: "auto"}}>CHECKOUT NOW</button>
+              <button className='TopButton' disabled={!verified} onClick={() => {reduceStock()}} style={{width: "350px", height: "auto", marginLeft: "20px"}}>CHECKOUT NOW</button>
             </StripeCheckout>
           </div>
         </div>
