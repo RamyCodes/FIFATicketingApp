@@ -10,6 +10,10 @@ import paymentsRoute from "./routes/payments.js";
 import stripeRoute from "./routes/stripe.js";
 import reservationsRoute from "./routes/reservations.js";
 import cors from "cors";
+import rateLimit from 'express-rate-limit';
+import { message } from "antd";
+
+
 
 const app = express();
 dotenv.config()
@@ -22,17 +26,19 @@ const connect = async () => {
       throw error;
     }
   };
-const rateLimit = require('express-rate-limit')
 
 const limiter = rateLimit({
+  
 	windowMs: 10000,
-	max: 2, // Limit each IP to 5 requests per `window` (here, per 10 seconds)
+	max: 3, // Limit each IP to 5 requests per `window` (here, per )
 	message: async (request, response) => {
-		if (await isPremium(request.user))
-			return 'Chill out bro.'
+     return response.send('Please be patient while we handle your request.')
+
 	},
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+
+  
 })
 
 // Apply the rate limiting middleware to all requests

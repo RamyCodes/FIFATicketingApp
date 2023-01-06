@@ -21,7 +21,7 @@ const Tickets = () => {
   const searchReq = () => {
     if(search === "")
     return message.error("Please enter an email !")
-    axios.get(`https://fifaback.onrender.com/api/reservations?email=${search}`)
+    axios.get(`http://localhost:5000/api/reservations?email=${search}`)
     .then( res => {
       if(res.data.length === 0)
       return message.error("This email does not exist !")
@@ -29,6 +29,7 @@ const Tickets = () => {
       console.log(res.data)
     })
     .catch(err => {
+      message.error("You are doing that too much. Please try again in a moment.")
       console.log(err)
     })
   }
