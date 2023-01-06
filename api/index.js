@@ -22,6 +22,26 @@ const connect = async () => {
       throw error;
     }
   };
+const rateLimit = require('express-rate-limit')
+
+const limiter = rateLimit({
+	windowMs: 10000,
+	max: 2, // Limit each IP to 5 requests per `window` (here, per 10 seconds)
+	message: async (request, response) => {
+		if (await isPremium(request.user))
+			return 'Chill out bro.'
+	},
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
+
+// Apply the rate limiting middleware to all requests
+app.use(limiter)
+
+
+
+
+
 
 //middlewares
 app.use(cors());
