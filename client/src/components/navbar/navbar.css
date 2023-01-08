@@ -4,15 +4,23 @@ body {
   background-color: white;
   overflow-x: hidden;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
   background-color: rgba(85, 0, 101);
   align-items: center;
 }
+
 .header-buttons {
   display: flex;
+  margin-right: 20px;
 }
+
+.header-logo img {
+  cursor: pointer;
+}
+
 button {
   border-radius: 20px;
   border: 1px;
@@ -23,20 +31,30 @@ button {
   margin: 0px 32px 0px 0px;
   cursor: pointer;
 }
+
 button:hover {
   color: rgba(85, 0, 101);
   transform: scale(1.1);
   transition: transform .2s;
   font-weight: bolder;
 }
+
 .header-title {
   color: white;
   font-size: x-large;
   font-weight: bold;
 }
+
 img {
   padding: 16px;
   height: 80px;
   margin-left: 16px;
+}
+
+MenuItem {
+  font-size: 17px;
   cursor: pointer;
+  margin-left: 25px;
+  font-weight: bold;
+  color: white;
 }

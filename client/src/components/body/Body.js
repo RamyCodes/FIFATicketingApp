@@ -1,12 +1,12 @@
 import React from 'react'
 import "./body.css"
-
+import {Link} from 'react-router-dom';
 
 const Body = () => {
   return (
-    <div class="content">
-      <div class="description">
-        <div class="description-text">
+    <div className="content">
+      <div className="description">
+        <div className="description-text">
             <p>
                 <h1>Tickets - FIFA World Cup Qatar 2022™</h1>
                 <h3>
@@ -22,13 +22,15 @@ const Body = () => {
                 </h3>
             </p>
         </div>
-        <div class="description-img">
+        <div className="description-img">
             <img src="https://digitalhub.fifa.com/transform/8a31d979-aad1-4fff-95d8-77fe0d20430b/WC2022_TicketsHero" alt="Helwa"/>
         </div>
       </div>
-      <div class="tickets">
+      <div className="tickets">
           <h3>GET YOUR TICKET</h3>
+          <Link to={'/Product'}>
           <img src="https://digitalhub.fifa.com/transform/d526c8ad-d3c5-4bd8-93d5-dccc811a001a/FWC-2022-Ticketing-International-Fans" alt="Helwa"/>
+          </Link>
       </div>
     </div>
     

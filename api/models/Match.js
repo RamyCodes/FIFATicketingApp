@@ -4,17 +4,31 @@ const MatchSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  dateUtc: {
-    type: Date,
-    required: true,
-  },
   roundNumber: {
     type: Number,
+    required: true,
+  },
+  dateUtc: {
+    type: Date,
     required: true,
   },
   location: {
     type: String,
     required: true,
+  },
+  availability:{
+    category1:{
+        count: {type: Number},
+        price: {type: Number}
+    },
+    category2:{
+        count: {type: Number},
+        price: {type: Number}
+    },
+    category3:{
+        count: {type: Number},
+        price: {type: Number}
+    }
   },
   homeTeam: {
     type: String,
@@ -24,17 +38,24 @@ const MatchSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  photos: {
-    type: [String],
-  },
-  desc: {
+  group: {
     type: String,
     required: true,
   },
-  featured: {
+  Featured: {
     type: Boolean,
-    default: false,
+    default: false, //will be used for data analytics
   },
+  NumberOfReservedTickets: {
+    type: Number,
+  },
+  NumberOfPendingTickets: {
+    type: Number,
+  },
+  NumberOfReservedTickets: {
+    type: Number,
+  }
+ 
 });
 
 export default mongoose.model("Match", MatchSchema)
